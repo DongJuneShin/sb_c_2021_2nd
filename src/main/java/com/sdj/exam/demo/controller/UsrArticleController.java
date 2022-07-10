@@ -13,48 +13,51 @@ import com.sdj.exam.demo.vo.Article;
 public class UsrArticleController {
 	private int articlesLastId;
 	private List<Article> articles;
-	
+
 	public UsrArticleController() {
-		articlesLastId=0;
-		articles= new ArrayList<>();
+		articlesLastId = 0;
+		articles = new ArrayList<>();
 		makeTest();
 	}
-	
+
 	public void makeTest() {
-		for(int i=1; i<=10; i++) {
-			int id=articlesLastId+1;
-			String title="제목"+i;
-			String body="내용"+i;
-			Article article = new Article(id, title, body);
-			
-			articles.add(article);
-			articlesLastId=id;
+		for (int i = 1; i <= 10; i++) {
+
+			String title = "제목" + i;
+			String body = "내용" + i;
+			writeArticle(title, body);
 		}
+	}
+
+	public Article writeArticle(String title, String body) {
+		int id = articlesLastId + 1;
+		Article article = new Article(id, title, body);
+
+		articles.add(article);
+		articlesLastId = id;
+
+		return article;
 	}
 
 	@RequestMapping("/usr/article/doAdd")
 	@ResponseBody
 	public Article doAdd(String title, String body) {
-		int id=articlesLastId+1;
-		Article article= new Article(id, title, body);
-		
-		articles.add(article);
-		articlesLastId=id;
-		
+		Article article = writeArticle(title, body);
+
 		return article;
 	}
-	
+
 	@RequestMapping("/usr/article/getArticles")
 	@ResponseBody
 	public List<Article> getArticles() {
-	
+
 		return articles;
 	}
-	
+
 	@RequestMapping("/usr/article/doDelete")
 	@ResponseBody
 	public String doDelete(int id) {
-		articles.remove(id-1);
-		return id+"번 게시물이 삭제되었습니다";
+		articles.remove(id - 1);
+		return id + "번 게시물이 삭제되었습니다";
 	}
 }
